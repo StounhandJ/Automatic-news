@@ -12,6 +12,7 @@ services:
     build: ./parser/
     restart: always
     environment:
+       DOCKER: true
        MONGO_HOST: mongodb
        MONGO_DATABASE: ${DATABASE}
        MONGO_COLLECTION: ${DATABASE_COLLECTION}

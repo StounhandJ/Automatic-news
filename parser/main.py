@@ -1,18 +1,18 @@
-from data.Article import Article
-from Logger import Logger
+from Logger import logger
+from data.config import release
 from parsers.StopGameParser import StopGameParser
 from storage import MongodbService
 import time
 import asyncio
-import logging
+
 storage = MongodbService.get_instance()
-logger = Logger()
+
 stopGameParser = StopGameParser()
 
 
 def saveArticles(articles):
     """
-    :param data: [Article]
+    :param articles: [Article]
     :return:
     """
     for article in articles:
@@ -35,6 +35,8 @@ async def main():
 
 
 if __name__ == "__main__":
+    if not release:
+        test = storage.delete_all_data()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
     loop.close()

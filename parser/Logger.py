@@ -2,7 +2,6 @@ import logging
 
 
 class Logger:
-
     _logger = None
 
     def __init__(self):
@@ -17,3 +16,9 @@ class Logger:
 
     def log(self, text):
         logging.info(text)
+
+    def error(self, text):
+        logging.error(text)
+
+
+logger = Logger()
