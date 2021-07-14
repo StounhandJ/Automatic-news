@@ -25,13 +25,14 @@ services:
   slim:
     build: ./news/
     restart: always
+    tty: true
     environment:
         docker: "true"
         MONGO_HOST: mongodb
         MONGO_DATABASE: ${DATABASE}
         MONGO_COLLECTION: ${DATABASE_COLLECTION}
-    ports:
-        - 8080:8000
+    # ports:
+    #     - 8080:8000
     volumes:
         - ./news:/news/var/www
         - logs:/news/var/www/logs
@@ -47,3 +48,17 @@ services:
     volumes:
       - mongodb_volume:/data/db
     container_name: news_mongo
+
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./news:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    links:
+      - slim

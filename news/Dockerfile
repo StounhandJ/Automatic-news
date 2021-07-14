@@ -4,14 +4,18 @@ RUN composer install --ignore-platform-reqs --no-scripts
 
 
 FROM php:fpm
-WORKDIR /var/www/root/
+WORKDIR /var/www
 
 
 RUN docker-php-ext-install pdo pdo_mysql
 RUN pecl install mongodb && docker-php-ext-enable mongodb
 
-COPY . /var/www/root
-COPY --from=composer /app/vendor /var/www/root/vendor
+COPY . /var/www
+COPY --from=composer /app/vendor /var/www/vendor
 
-EXPOSE 8000
-CMD bash -c "php -S 0.0.0.0:8000 -t public"
+RUN chown -R www-data:www-data /var/www
+
+WORKDIR /var/www/public
+EXPOSE 9000
+CMD ["php-fpm"]
+#CMD bash -c "php -S 0.0.0.0:8000 -t public"
