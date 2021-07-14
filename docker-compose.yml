@@ -2,8 +2,10 @@ version: "3.7"
 
 volumes:
   mongodb_volume:
+    name: mongo
   logs:
       driver: local
+      name: logs
 
 
 services:
@@ -12,39 +14,30 @@ services:
     build: ./parser/
     restart: always
     environment:
-       DOCKER: true
+       DOCKER: "true"
        MONGO_HOST: mongodb
        MONGO_DATABASE: ${DATABASE}
        MONGO_COLLECTION: ${DATABASE_COLLECTION}
     links:
       - mongodb
+    container_name: news_parser
 
   slim:
     build: ./news/
     restart: always
-    working_dir: /news/var/www
-    command: php -S 0.0.0.0:8080 -t public
     environment:
         docker: "true"
         MONGO_HOST: mongodb
         MONGO_DATABASE: ${DATABASE}
         MONGO_COLLECTION: ${DATABASE_COLLECTION}
     ports:
-        - 8080:8080
+        - 8080:8000
     volumes:
         - ./news:/news/var/www
         - logs:/news/var/www/logs
     links:
-        - composer
         - mongodb
-
-  composer:
-    image: composer
-    restart: on-failure
-    command: composer install --ignore-platform-reqs
-    volumes:
-    - ./news:/app
-    working_dir: /app
+    container_name: news_site
 
   mongodb:
     image: mongo:latest
@@ -53,3 +46,4 @@ services:
 #    - 27017:27017
     volumes:
       - mongodb_volume:/data/db
+    container_name: news_mongo
