@@ -2,9 +2,8 @@ version: "3.7"
 
 volumes:
   mongodb_volume:
-    name: mongo
+      name: mongo
   logs:
-      driver: local
       name: logs
 
 
@@ -18,7 +17,7 @@ services:
        MONGO_HOST: mongodb
        MONGO_DATABASE: ${DATABASE}
        MONGO_COLLECTION: ${DATABASE_COLLECTION}
-    links:
+    depends_on:
       - mongodb
     container_name: news_parser
 
@@ -34,9 +33,8 @@ services:
     # ports:
     #     - 8080:8000
     volumes:
-        - ./news:/news/var/www
         - logs:/news/var/www/logs
-    links:
+    depends_on:
         - mongodb
     container_name: news_site
 
@@ -58,7 +56,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./news:/var/www
+      - ./news/public:/var/www/public
       - ./nginx/conf.d/:/etc/nginx/conf.d/
-    links:
+    depends_on:
       - slim

@@ -6,7 +6,7 @@ from Logger import logger
 def connectionErrorHandling(func):
     def wrapper(self, data=None):
         try:
-            func(self, data)
+            return func(self, data)
         except Exception:
             logger.error("Error connect DB")
             return []
