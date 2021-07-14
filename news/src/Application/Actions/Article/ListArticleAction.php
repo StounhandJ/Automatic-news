@@ -16,6 +16,6 @@ class ListArticleAction extends ArticleAction
 
         $this->logger->info("Users list was viewed.");
 
-        return $this->respondWithPage("main",["articles"=>$articles]);
+        return $this->respondWithPage("main",["articles"=>$articles, "countPages"=>3]);
     }
 }

@@ -1,0 +1,40 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+a:hover{
+    color: blue;
+}
+.self{
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid black;
+    min-width: 400px;
+    max-width: 500px;
+    padding: 10px;
+    margin: 20px auto;
+}
+.self img{
+    margin: 10px;
+}
+h1{
+    font-size: 26px;
+}
+h2{
+    font-size: 20px;
+}
+.info p{
+    max-width: 320px;
+}

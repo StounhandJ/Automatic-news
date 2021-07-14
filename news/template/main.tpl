@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="js/groups.js"></script>
-    <link rel="stylesheet" href="css/groups.css">
+    <script src="js/article.js"></script>
+    <link rel="stylesheet" href="css/article.css">
 </head>
 
 <body>
@@ -20,5 +20,8 @@
         </div>
     </div>
 {/foreach}
+{for $i=0; $i<$countPages; $i++}
+    <li><a href='/?p={$i+1}'>{$i+1}</a></li>
+{/for}
 </body>
 </html>

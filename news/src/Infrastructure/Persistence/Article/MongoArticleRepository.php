@@ -18,14 +18,11 @@ class MongoArticleRepository implements ArticleRepository
      */
     private $articles;
 
-    public function __construct()
+    public function __construct($mongoHost, $mongoDB, $articleCollection)
     {
-        $host = $_ENV['MONGO_HOST'];
-        $dataBase = $_ENV['MONGO_DATABASE'];
-        $collection = $_ENV['MONGO_COLLECTION'];
-        $client = new \MongoDB\Client("mongodb://{$host}");
-        $this->db = $client->selectDatabase($dataBase);
-        $this->articles = $this->db->selectCollection($collection);
+        $client = new \MongoDB\Client("mongodb://{$mongoHost}");
+        $this->db = $client->selectDatabase($mongoDB);
+        $this->articles = $this->db->selectCollection($articleCollection);
     }
 
 

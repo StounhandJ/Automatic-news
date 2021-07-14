@@ -11,19 +11,21 @@ return function (ContainerBuilder $containerBuilder) {
     // Global Settings Object
     $containerBuilder->addDefinitions([
         SettingsInterface::class => function () {
+            $docker = $_ENV['docker']??false;
             return new Settings([
                 'displayErrorDetails' => true, // Should be set to false in production
                 'logError'            => false,
                 'logErrorDetails'     => false,
+                'docker'=>$docker,
                 'logger' => [
                     'name' => 'slim-app',
-                    'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
+                    'path' => $docker ? 'php://stdout' : __DIR__ . '/../logs/app.log',
                     'level' => Logger::DEBUG,
                 ],
                 'databaseMongo' => [
-                    "host" => $_ENV['MONGO_HOST'],
-                    "dataBase"=>$_ENV['MONGO_DATABASE'],
-                    "articles_collection"=> $_ENV['MONGO_COLLECTION']
+                    "host" => $docker ? $_ENV['MONGO_HOST'] : "localhost",
+                    "dataBase"=>$docker ? $_ENV['MONGO_DATABASE'] : "testDB",
+                    "articles_collection"=> $docker ? $_ENV['MONGO_COLLECTION'] : "testCollectionArt"
                 ]
             ]);
         }
