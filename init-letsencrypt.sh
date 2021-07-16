@@ -1,11 +1,25 @@
 #!/bin/bash
 
+loadEnv() {
+  local envFile="${1?Missing environment file}"
+  local environmentAsArray variableDeclaration
+  mapfile environmentAsArray < <(
+    grep --invert-match '^#' "${envFile}" \
+      | grep --invert-match '^\s*$'
+  ) # Uses grep to remove commented and blank lines
+  for variableDeclaration in "${environmentAsArray[@]}"; do
+    export "${variableDeclaration//[$'\r\n']}" # The substitution removes the line breaks
+  done
+}
+
+loadEnv .env
+
 if ! [ -x "$(command -v docker-compose)" ]; then
   echo 'Error: docker-compose is not installed.' >&2
   exit 1
 fi
 
-domains=(exempl.com www.exempl.com)
+domains=($DOMAIN)
 rsa_key_size=4096
 data_path="./data/certbot"
 email="simenshteyn@gmail.com" # Adding a valid address is strongly recommended

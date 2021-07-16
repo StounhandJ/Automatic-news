@@ -47,9 +47,9 @@ services:
       - mongodb_volume:/data/db
     container_name: news_mongo
 
-  webserver:
+  nginx:
     image: nginx:alpine
-    container_name: webserver
+    container_name: nginx
     restart: unless-stopped
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     ports:
