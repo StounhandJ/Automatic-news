@@ -11,4 +11,5 @@
 1. `./run.sh` Run the script
 ****
 ## Additional:
-After the launch, the site will be available at `localhost:8080`. The parser will check the sites for new articles every 10 minutes, after checking they will immediately be displayed on the site.
+To restart the project and get new updates, write `chmod +x restart.sh && ./restart.sh`.  
+The parser will check the sites for new articles every 10 minutes, after checking they will immediately be displayed on the site.
