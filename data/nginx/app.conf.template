@@ -6,9 +6,6 @@ server {
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
     }
-    location = /test {
-        return 200 ${DOMAIN};
-    }
 
     location / {
         return 301 https://$host$request_uri;
