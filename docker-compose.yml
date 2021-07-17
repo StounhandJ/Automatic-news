@@ -51,7 +51,9 @@ services:
     image: nginx:alpine
     container_name: nginx
     restart: unless-stopped
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    command: ["/bin/sh", "-c", "set -eu && envsubst '$$DOMAIN' < /etc/nginx/conf.d/app.conf.template > /etc/nginx/conf.d/app.conf && nginx -g 'daemon off;' && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"]
+    environment:
+       DOMAIN: ${DOMAIN}
     ports:
       - "80:80"
       - "443:443"
