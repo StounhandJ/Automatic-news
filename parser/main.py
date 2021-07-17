@@ -1,13 +1,13 @@
 from Logger import logger
 from data.config import release
-from parsers.StopGameParser import StopGameParser
+from parsers.PlayGroundParser import PlayGroundParser
 from storage import MongodbService
 import time
 import asyncio
 
 storage = MongodbService.get_instance()
 
-stopGameParser = StopGameParser()
+playGroundParser = PlayGroundParser()
 
 
 def saveArticles(articles):
@@ -21,7 +21,7 @@ def saveArticles(articles):
 
 async def main():
     while True:
-        stopGameArticles = await stopGameParser.parse()
+        stopGameArticles = await playGroundParser.parse()
         DtfArticles = []
 
         articles = stopGameArticles + DtfArticles

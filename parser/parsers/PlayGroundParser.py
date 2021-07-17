@@ -7,7 +7,7 @@ import requests
 from data.ArticleFactory import ArticleFactory
 
 
-class StopGameParser(IParser):
+class PlayGroundParser(IParser):
     _url = "https://www.playground.ru/news"
     _lastTitle = ""
     _className = ""
@@ -34,7 +34,7 @@ class StopGameParser(IParser):
     def _parsePage(self, page: int) -> [Article]:
         articles = []
         soup = self._createSoup(self._url, {"p": page})
-        allArticlesHTML = soup.findAll('article', class_='post')
+        allArticlesHTML = soup.findAll('div', class_='post')
         for articleHTML in allArticlesHTML:
             article = self._articleHtmlToArticle(articleHTML)
             if self._isLastArticle(article):
