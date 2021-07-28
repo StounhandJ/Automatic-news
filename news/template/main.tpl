@@ -14,7 +14,7 @@
 <body>
 {foreach $articles as $article}
     <div class="self">
-        <img src="{$article->getImgSrc()}" alt="#">
+        <img width="200" height="120" src="{$article->getImgSrc()}" alt="#">
         <div class="info">
             <h1><a href="{$article->getSrc()}">{$article->getTitle()}</a></h1>
         </div>

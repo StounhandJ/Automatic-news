@@ -25,7 +25,7 @@ return function (ContainerBuilder $containerBuilder) {
                 'databaseMongo' => [
                     "host" => $docker ? $_ENV['MONGO_HOST'] : "localhost",
                     "dataBase"=>$docker ? $_ENV['MONGO_DATABASE'] : "testDB",
-                    "articles_collection"=> $docker ? $_ENV['MONGO_COLLECTION'] : "testCollectionArt"
+                    "articles_collection"=> $docker ? $_ENV['MONGO_COLLECTION'] : "testArticles"
                 ]
             ]);
         }

@@ -7,6 +7,8 @@ import time
 import asyncio
 
 storage = MongodbService.get_instance()
+if not release:
+    storage.delete_all_data()
 
 playGroundParser = PlayGroundParser()
 
@@ -38,8 +40,6 @@ async def main():
 
 
 if __name__ == "__main__":
-    if not release:
-        test = storage.delete_all_data()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
     loop.close()

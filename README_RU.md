@@ -1,12 +1,13 @@
 # Automatic-news
-[[EN]](README.md) [[RU]](README_RU.md)
+[[EN]](README.md) [RU]
 #### Автоматический новостной сайт, с отдельным парсером новых публикаций на других сайтах. Так же присутствует автоматическая выдача SSL сертификата.
 ****
 ## Зависимости:
 1. [Docker](https://www.docker.com/)
 1. [docker-compose](https://github.com/docker/compose)
 ## Запуск:
-1. В файле [.env](.env) в переменную DOMAIN записать свой домен
+1. В файле [.env.example](.env.example) в переменную DOMAIN записать свой домен. 
+1. Файл [.env.example](.env.example) переименовать в **.env**
 1. `chmod +x run.sh` Выдать права на выполнения скрипта
 1. `./run.sh` Запустить скрипт
 ****
