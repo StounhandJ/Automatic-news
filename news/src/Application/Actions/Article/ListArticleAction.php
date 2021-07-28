@@ -3,7 +3,7 @@
 namespace App\Application\Actions\Article;
 
 use App\Application\Actions\Article\ArticleAction;
-use App\Domain\Article\ArticleNotFoundException;
+use App\Domain\Article\ArticlesNotFoundException;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class ListArticleAction extends ArticleAction
@@ -14,7 +14,7 @@ class ListArticleAction extends ArticleAction
     protected function action(): Response
     {
         $page = $this->queryParam("p") ?? 1;
-        if (!is_int($page) || $page<1) throw new ArticleNotFoundException();
+        if (!is_numeric($page) || $page<1) throw new ArticlesNotFoundException();
         $articles = $this->articleRepository->findAll(30, $page*30);
         $this->logger->info("Users list was viewed.");
 
