@@ -1,5 +1,5 @@
 import bs4
-from data.Interface.IParser import IParser
+from data.Abstract.ParserAbstract import ParserAbstract
 from data.Article import Article
 from bs4 import BeautifulSoup
 import requests
@@ -7,7 +7,7 @@ import requests
 from data.ArticleFactory import ArticleFactory
 
 
-class PlayGroundParser(IParser):
+class PlayGroundParser(ParserAbstract):
     _url = "https://www.playground.ru/news"
     _lastTitle = ""
     _className = ""
@@ -33,7 +33,7 @@ class PlayGroundParser(IParser):
 
     def _parsePage(self, page: int) -> [Article]:
         articles = []
-        soup = self._createSoup(self._url, {"p": page})
+        soup = self._createSoupFromUrl(self._url, {"p": page})
         allArticlesHTML = soup.findAll('div', class_='post')
         for articleHTML in allArticlesHTML:
             article = self._articleHtmlToArticle(articleHTML)
@@ -49,15 +49,11 @@ class PlayGroundParser(IParser):
         """
         return self._lastTitle == article.title
 
-    def _createSoup(self, url: str, params={}) -> BeautifulSoup:
-        page = requests.get(url, params=params)
-        return BeautifulSoup(page.text, "html.parser")
-
     def _articleHtmlToArticle(self, articleHTML: bs4.Tag) -> Article:
         """
         Парсинг отдельного поста
         :param articleHTML:
-        :return: int
+        :return: Article
         """
         title = articleHTML.findAll(class_="post-title")[0].text.strip()
         src = articleHTML.findAll(class_="post-title")[0].findAll("a")[0]["href"]
@@ -72,7 +68,7 @@ class PlayGroundParser(IParser):
         })
 
     def _parseContentArticle(self, src_post: str) -> str:
-        soup = self._createSoup(src_post)
+        soup = self._createSoupFromUrl(src_post)
         return soup.findAll(class_="article-content js-post-item-content")[0].text.strip()
 
     def _setLastArticle(self, article: Article):

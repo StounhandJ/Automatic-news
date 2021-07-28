@@ -7,7 +7,7 @@ def connectionErrorHandling(func):
     def wrapper(self, data=None):
         try:
             return func(self, data)
-        except Exception:
+        except Exception as e:
             logger.error("Error connect DB")
             return []
     return wrapper
@@ -44,5 +44,5 @@ class MongodbService(object):
         return self._articlesСollection.insert_one(dto)
 
     @connectionErrorHandling
-    def delete_all_data(self):
+    def delete_all_data(self, dt=None):
         self._articlesСollection.drop()
