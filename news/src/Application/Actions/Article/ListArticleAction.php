@@ -12,10 +12,10 @@ class ListArticleAction extends ArticleAction
      */
     protected function action(): Response
     {
-        $articles = $this->articleRepository->findAll();
-
+        $page = $this->queryParam("p")-1;
+        $articles = $this->articleRepository->findAll(30, $page*30);
         $this->logger->info("Users list was viewed.");
 
-        return $this->respondWithPage("main",["articles"=>$articles, "countPages"=>3]);
+        return $this->respondWithPage("main",["articles"=>$articles, "countPages"=>$this->articleRepository->count()/30]);
     }
 }

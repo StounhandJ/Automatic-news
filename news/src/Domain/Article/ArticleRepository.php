@@ -12,4 +12,9 @@ interface ArticleRepository
      * @return \App\Domain\Article\Article[]
      */
     public function findAll(int $limit=30, int $offset=0): array;
+
+    /**
+     * @return int
+     */
+    public function count(): int;
 }

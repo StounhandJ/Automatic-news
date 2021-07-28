@@ -70,6 +70,15 @@ abstract class Action
     abstract protected function action(): Response;
 
     /**
+     * @param  string $name
+     * @return mixed
+     */
+    protected function queryParam(string $name)
+    {
+        return $this->request->getQueryParams()[$name]??null;
+    }
+
+    /**
      * @return array|object
      * @throws HttpBadRequestException
      */

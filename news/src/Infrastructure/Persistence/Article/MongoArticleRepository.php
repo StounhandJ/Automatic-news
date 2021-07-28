@@ -28,7 +28,7 @@ class MongoArticleRepository implements ArticleRepository
 
     public function findAll(int $limit=30, int $offset=0): array
     {
-        $documentList = $this->articles->find([],["limit"=>$limit, "offset"=>$offset]);
+        $documentList = $this->articles->find([],["limit"=>$limit, "skip"=>$offset]);
         $arrayArticle = [];
         /** @var $document BSONDocument */
         foreach ($documentList as $document)
@@ -38,6 +38,10 @@ class MongoArticleRepository implements ArticleRepository
         return $arrayArticle;
     }
 
+    public function count(): int
+    {
+        return $this->articles->count();
+    }
     private function DocumentToArticle(BSONDocument $document): Article
     {
         return new Article($document->offsetGet("title"), $document->offsetGet("text"), $document->offsetGet("src"), $document->offsetGet("img_src"));
