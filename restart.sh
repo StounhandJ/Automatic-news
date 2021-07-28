@@ -10,4 +10,8 @@ docker-compose down
 git fetch --all
 git reset --hard origin/master
 
+chmod +x data/init-letsencrypt.sh
+chmod +x run.sh
+chmod +x restart.sh
+
 docker-compose up --build -d

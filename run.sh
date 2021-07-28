@@ -8,6 +8,7 @@ fi
 docker-compose build
 
 chmod +x data/init-letsencrypt.sh
+chmod +x restart.sh
 
 ./data/init-letsencrypt.sh
 
