@@ -28,7 +28,7 @@ class MongoArticleRepository implements ArticleRepository
 
     public function findAll(int $limit=30, int $offset=0): array
     {
-        $documentList = $this->articles->find([],["limit"=>$limit, "skip"=>$offset]);
+        $documentList = $this->articles->find([],["limit"=>$limit, "skip"=>$offset, "sort"=>["_id"=>-1]]);
         $arrayArticle = [];
         /** @var $document BSONDocument */
         foreach ($documentList as $document)

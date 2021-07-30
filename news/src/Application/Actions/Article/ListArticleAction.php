@@ -15,7 +15,7 @@ class ListArticleAction extends ArticleAction
     {
         $page = $this->queryParam("p") ?? 1;
         if (!is_numeric($page) || $page<1) throw new ArticlesNotFoundException();
-        $articles = $this->articleRepository->findAll(30, $page*30);
+        $articles = $this->articleRepository->findAll(30, ($page-1)*30);
         $this->logger->info("Users list was viewed.");
 
         return $this->respondWithPage("main",["articles"=>$articles, "countPages"=>$this->articleRepository->count()/30]);

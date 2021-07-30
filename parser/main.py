@@ -30,7 +30,7 @@ async def main():
         DtfArticles = await dtfParser.parse()
 
         articles = stopGameArticles + DtfArticles
-        saveArticles(articles)
+        saveArticles(articles[::-1])
 
         logger.log("{} articles added".format(len(articles)))
         time.sleep(60 * 10)
