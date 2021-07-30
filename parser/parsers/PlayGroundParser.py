@@ -19,7 +19,6 @@ class PlayGroundParser(ParserAbstract):
             while self._isGetLastArticle(articles, page):
                 page += 1
                 articles += self._parsePage(page)
-        self._setLastTitle(articles[0]) if len(articles) > 0 else 0
         return articles
 
     def _isGetLastArticle(self, articles, page) -> bool:

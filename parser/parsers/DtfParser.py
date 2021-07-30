@@ -12,7 +12,6 @@ class DTFParser(ParserAbstract):
     _urlMore = "https://dtf.ru/games/entries/new/more"
     _lastID = 0
 
-
     async def parse(self) -> [Article]:
         articles = []
 
@@ -32,7 +31,6 @@ class DTFParser(ParserAbstract):
             if self._getLastTitle() == "":
                 break
 
-        self._setLastTitle(articles[0]) if len(articles) > 0 else 0
         return articles
 
     def _getLastID(self, pageBS: BeautifulSoup) -> int:
@@ -65,7 +63,6 @@ class DTFParser(ParserAbstract):
             "last_id": lastID, "last_sorting_value": feedValue
         })["data"]
         return data["last_id"], data["last_sorting_value"]
-
 
     def _parseData(self, pageBS: BeautifulSoup) -> [Article]:
         """

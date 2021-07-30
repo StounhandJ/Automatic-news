@@ -12,18 +12,16 @@ from data.Article import Article
 
 class ParserAbstract:
 
-    __lastTitle = ""
     __className = ""
 
     def __init__(self):
-        self.__lastTitle = self._getLastTitleFromMongo()
         self.__className = self.__module__.split(".")[-1]
 
-    def _getLastTitleFromMongo(self) -> str:
+    def _getLastTitle(self) -> str:
         class_name = self.__module__.split(".")[-1]
-        return self._getLastArticleFromMongo(class_name).title
+        return self._getLastArticle(class_name).title
 
-    def _getLastArticleFromMongo(self, class_name) -> Article:
+    def _getLastArticle(self, class_name) -> Article:
         storage = MongodbService.get_instance()
         return ArticleFactory.create(storage.getLastArticleParser(class_name))
 
@@ -40,12 +38,6 @@ class ParserAbstract:
 
     def _getClassName(self):
         return self.__className
-
-    def _getLastTitle(self):
-        return self.__lastTitle
-
-    def _setLastTitle(self, lastTitle):
-        self.__lastTitle = lastTitle
 
     @abstractmethod
     async def parse(self):
