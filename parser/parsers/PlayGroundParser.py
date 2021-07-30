@@ -1,8 +1,6 @@
 import bs4
 from data.Abstract.ParserAbstract import ParserAbstract
 from data.Article import Article
-from bs4 import BeautifulSoup
-import requests
 
 from data.ArticleFactory import ArticleFactory
 
@@ -26,7 +24,7 @@ class PlayGroundParser(ParserAbstract):
 
     def _parsePage(self, page: int) -> [Article]:
         articles = []
-        soup = self._createSoupFromUrl(self._url, {"p": page})
+        soup = self._createSoupFromUrl(self._url, {"p": page}, {"pg_post_sorting": "%7B%22news%22%3A%22fixed getting last title |  PGParser getting article by creation_date%22%7D"})
         allArticlesHTML = soup.findAll('div', class_='post')
         for articleHTML in allArticlesHTML:
             article = self._articleHtmlToArticle(articleHTML)

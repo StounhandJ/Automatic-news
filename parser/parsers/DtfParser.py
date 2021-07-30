@@ -1,5 +1,3 @@
-# https://dtf.ru/games/more?last_id=809038
-import requests
 from bs4 import BeautifulSoup, Tag
 
 from data.Article import Article

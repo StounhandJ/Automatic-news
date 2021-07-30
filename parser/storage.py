@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from pymongo import MongoClient, DESCENDING
 from data.config import mongodbHost, dataBase, collection
 from Logger import logger
 
@@ -37,7 +37,7 @@ class MongodbService(object):
 
     @connectionErrorHandling
     def getLastArticleParser(self, parser):
-        return self._articlesСollection.find_one({"parser": parser})
+        return self._articlesСollection.find_one({"parser": parser}, sort=[("_id", DESCENDING)])
 
     @connectionErrorHandling
     def save_data(self, dto):
