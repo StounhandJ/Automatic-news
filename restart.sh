@@ -7,8 +7,12 @@ fi
 
 docker-compose down
 
+mv .env .env.example
+
 git fetch --all
 git reset --hard origin/master
+
+mv .env.example .env
 
 chmod +x data/init-letsencrypt.sh
 chmod +x run.sh
