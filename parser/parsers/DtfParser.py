@@ -10,13 +10,8 @@ from data.Abstract.ParserAbstract import ParserAbstract
 class DTFParser(ParserAbstract):
     _urlOrigin = "https://dtf.ru/games/entries/new?mode=ajax"
     _urlMore = "https://dtf.ru/games/entries/new/more"
-    _lastTitle = ""
-    _className = ""
     _lastID = 0
 
-    def __init__(self):
-        self._lastTitle = super().getLastTitle()
-        self._className = self.__module__.split(".")[-1]
 
     async def parse(self) -> [Article]:
         articles = []
@@ -34,10 +29,10 @@ class DTFParser(ParserAbstract):
                 lastID, feedValue = self._getLastIdAndLastSortingValue(lastID, feedValue)
             articles += self._parseData(pageBS)
             page += 1
-            if self._lastTitle == "":
+            if self._getLastTitle() == "":
                 break
 
-        self._setLastArticle(articles[0]) if len(articles) > 0 else 0
+        self._setLastTitle(articles[0]) if len(articles) > 0 else 0
         return articles
 
     def _getLastID(self, pageBS: BeautifulSoup) -> int:
@@ -113,7 +108,7 @@ class DTFParser(ParserAbstract):
             "src": src,
             "text": text,
             "img_src": img_src,
-            "parser": self._className
+            "parser": self._getClassName()
         })
 
     def _isLastArticle(self, article) -> bool:
@@ -121,10 +116,7 @@ class DTFParser(ParserAbstract):
         :param article: Article
         :return: bool
         """
-        return self._lastTitle == article.title
+        return self._getLastTitle() == article.title
 
     def _isGetLastArticle(self, articles, page) -> bool:
         return len(articles) == page * 12
-
-    def _setLastArticle(self, article: Article):
-        self._lastTitle = article.title
