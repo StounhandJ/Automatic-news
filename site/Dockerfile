@@ -16,6 +16,8 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 COPY --chown=www:www . /var/www
 COPY --from=composer /app/vendor /var/www/vendor
 
+RUN mv .env.example .env
+RUN php artisan key:generate
 USER www
 
 EXPOSE 9000

@@ -13,7 +13,7 @@ git fetch --all
 git reset --hard origin/master
 
 mv .env.example .env
-mv site/.env.example site/.env
+
 chmod +x data/init-letsencrypt.sh
 chmod +x run.sh
 chmod +x restart.sh
