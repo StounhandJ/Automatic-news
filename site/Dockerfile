@@ -1,5 +1,5 @@
 FROM composer as composer
-COPY composer* /app
+COPY composer.* /app/
 RUN composer install --ignore-platform-reqs --no-scripts
 
 FROM php:fpm
