@@ -1,9 +1,0 @@
-.idea/
-.vscode/
-/coverage/
-/vendor/
-/template/compile
-composer.lock
-/logs/*
-!/logs/README.md
-.phpunit.result.cache
