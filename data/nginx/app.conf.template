@@ -35,6 +35,6 @@ server {
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         fastcgi_param SCRIPT_NAME $fastcgi_script_name;
         fastcgi_index index.php;
-        fastcgi_pass slim:9000;
+        fastcgi_pass ${BACK_END}:9000;
     }
 }

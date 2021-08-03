@@ -9,6 +9,15 @@ volumes:
 
 services:
 
+  webpack_mix:
+    build:
+      context: ./site/
+      dockerfile: DockerfileWebpack
+    tty: true
+    volumes:
+        - ./site/public:/var/app/public
+    container_name: webpack_mix
+
   parser:
     build: ./parser/
     restart: always
@@ -21,19 +30,21 @@ services:
       - mongodb
     container_name: news_parser
 
-  slim:
-    build: ./news/
+  news_site:
+    build: ./site/
     restart: always
     tty: true
     environment:
         docker: "true"
-        MONGO_HOST: mongodb
-        MONGO_DATABASE: ${DATABASE}
+        APP_DEBUG: "true"
+        APP_URL: ${DOMAIN}
+        DB_HOST: mongodb
+        DB_DATABASE: ${DATABASE}
         MONGO_COLLECTION: ${DATABASE_COLLECTION}
     # ports:
     #     - 8080:8000
     volumes:
-        - logs:/news/var/www/logs
+        - logs:/site/storage/logs
     depends_on:
         - mongodb
     container_name: news_site
@@ -51,19 +62,21 @@ services:
     image: nginx:alpine
     container_name: nginx
     restart: unless-stopped
-    command: ["/bin/sh", "-c", "set -eu && envsubst '$$DOMAIN' < /etc/nginx/conf.d/app.conf.template > /etc/nginx/conf.d/app.conf && nginx -g 'daemon off;' && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"]
+    command: ["/bin/sh", "-c", "set -eu && envsubst '$$DOMAIN, $$BACK_END' < /etc/nginx/conf.d/app.conf.template > /etc/nginx/conf.d/app.conf && nginx -g 'daemon off;' && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"]
     environment:
        DOMAIN: ${DOMAIN}
+       BACK_END: news_site
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./news/public:/var/www/public
+      - ./site/public:/var/www/public
       - ./data/nginx:/etc/nginx/conf.d
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     depends_on:
-      - slim
+      - news_site
+      - webpack_mix
 
   certbot:
     image: certbot/certbot
