@@ -5,4 +5,4 @@ COPY webpack.mix.js ./
 COPY resources ./resources
 
 RUN npm ci
-CMD npm run prod
+CMD npm run dev
