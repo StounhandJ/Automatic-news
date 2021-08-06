@@ -5,13 +5,27 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
+loadEnv() {
+  local envFile="${1?Missing environment file}"
+  local environmentAsArray variableDeclaration
+  mapfile environmentAsArray < <(
+    grep --invert-match '^#' "${envFile}" \
+      | grep --invert-match '^\s*$'
+  ) # Uses grep to remove commented and blank lines
+  for variableDeclaration in "${environmentAsArray[@]}"; do
+    export "${variableDeclaration//[$'\r\n']}" # The substitution removes the line breaks
+  done
+}
+
+loadEnv .env
+
 docker-compose build
 
 chmod +x data/init-letsencrypt.sh
 chmod +x restart.sh
 
-./data/init-letsencrypt.sh
-
+#./data/init-letsencrypt.sh
+./data/certbot/run.sh $DOMAIN $CLOUDFLARE_API_KEY $CLOUDFLARE_EMAIL
 docker-compose down
 
 docker-compose up -d
