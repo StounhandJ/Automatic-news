@@ -38,3 +38,6 @@ h2{
 .info p{
     max-width: 320px;
 }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
