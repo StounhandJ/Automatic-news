@@ -1,4 +1,4 @@
-FROM certbot/certbot
+FROM certbot/dns-cloudflare
 
 LABEL maintainer="k078264@gmail.com"
 

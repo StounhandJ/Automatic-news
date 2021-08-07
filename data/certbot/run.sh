@@ -15,7 +15,7 @@ DIR=`pwd`
 
 ########## Modify THIS SECTION #############
 # MODE="staging"
-CERTBOT_EMAIL="<Email>"
+CERTBOT_EMAIL="exempl@gmail.com"
 CLOUDFLARE_API_KEY=$2
 CLOUDFLARE_EMAIL=$3
 ############################################
