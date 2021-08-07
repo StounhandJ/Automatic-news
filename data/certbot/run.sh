@@ -21,7 +21,8 @@ CERTBOT_EMAIL="exempl@gmail.com"
 CLOUDFLARE_API_KEY=$2
 CLOUDFLARE_EMAIL=$3
 ############################################
-docker build -t wildcard-certbot $DIR
+
+docker build -t wildcard-certbot "$DIR"
 
 docker run -it --rm \
     -v "$DIR/conf:/etc/letsencrypt" \
