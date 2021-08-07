@@ -11,7 +11,9 @@ fi
 
 DOMAIN_NAME=$1
 PATH=$PATH
-DIR=`pwd`
+
+ABSOLUTE_FILENAME=`readlink -e "$0"`
+DIR=`dirname "$ABSOLUTE_FILENAME"`
 
 ########## Modify THIS SECTION #############
 # MODE="staging"
