@@ -29,7 +29,6 @@ chmod +x data/certbot/gen-ssl.sh
 chmod +x restart.sh
 
 echo "Getting a wildcard certificate..."
-docker build -t wildcard-certbot data/certbot/
 ./data/certbot/run.sh $DOMAIN $CLOUDFLARE_API_KEY $CLOUDFLARE_EMAIL
 
 echo "Reboot..."
