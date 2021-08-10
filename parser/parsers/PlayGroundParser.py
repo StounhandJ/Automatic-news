@@ -17,6 +17,7 @@ class PlayGroundParser(ParserAbstract):
             while self._isGetLastArticle(articles, page):
                 page += 1
                 articles += self._parsePage(page)
+                #Если пост был изменен и поиск улетел в бесконечность
                 if len(articles) > 30 * 3:
                     articles = [articles[0]]
                     break
