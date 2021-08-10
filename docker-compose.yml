@@ -90,9 +90,9 @@ services:
       - webpack_mix
 
   certbot:
-    image: certbot/certbot
+    image: certbot/dns-cloudflare
     restart: unless-stopped
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --dns-cloudflare-credentials /cloudflare.ini; sleep 12h & wait $${!}; done;'"
     volumes:
       - ./data/certbot/cloudflare.ini:/opt/cerbot/cloudflare.ini
       - ./data/certbot/conf:/etc/letsencrypt
