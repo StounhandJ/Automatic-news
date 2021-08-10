@@ -28,6 +28,10 @@ class DTFParser(ParserAbstract):
             page += 1
             if self._getLastSrc() == "":
                 break
+            #Если пост был изменен и поиск улетел в бесконечность
+            if len(articles) > 12 * 8:
+                articles = [articles[0]]
+                break
 
         return articles
 
