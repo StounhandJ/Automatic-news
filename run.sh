@@ -19,8 +19,6 @@ loadEnv() {
 
 loadEnv .env
 
-echo -e "\033[1;32m \033[41m Collecting a project... \033[0m"
-docker-compose build
 
 echo -e "\033[1;32m \033[41m Granting rights to files... \033[0m"
 chmod +x data/certbot/run.sh
@@ -31,5 +29,6 @@ echo -e "\033[1;32m \033[41m Getting a wildcard certificate... \033[0m"
 ./data/certbot/run.sh $DOMAIN $CLOUDFLARE_API_KEY $CLOUDFLARE_EMAIL
 
 echo -e "\033[1;32m \033[41m Reboot... \033[0m"
+docker-compose build
 docker-compose down
 docker-compose up -d
