@@ -2,6 +2,7 @@ import json
 import time
 import asyncio
 import requests
+from requests.exceptions import ReadTimeout
 
 from Logger import logger
 from data.config import release, telegramHost
@@ -20,11 +21,19 @@ dtfParser = DTFParser()
 
 def saveArticles(articlesJSON):
     """
-    :param articles: [Article]
+    :param articlesJSON: [Article]
     :return:
     """
     for article in articlesJSON:
         storage.save_data(article)
+
+
+def sendToTelegram(articlesJSON):
+    try:
+        if len(articlesJSON) > 0:
+            requests.post("http://" + telegramHost, data=json.dumps(articlesJSON), timeout=1)
+    except ReadTimeout:
+        pass
 
 
 def articleToArticleJson(articles):
@@ -43,15 +52,11 @@ async def main():
 
         articlesJSON = articleToArticleJson(articles[::-1])
 
-        if len(articlesJSON) > 0:
-            requests.get("http://" + telegramHost, data=json.dumps(articlesJSON))
+        sendToTelegram(articlesJSON)
         saveArticles(articlesJSON)
 
         logger.log("{} articles added".format(len(articlesJSON)))
         time.sleep(60 * 10)
-
-    # for data in storage.get_data(): Вывод всех статей
-    #     print(data)
 
 
 if __name__ == "__main__":
