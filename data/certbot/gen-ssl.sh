@@ -34,11 +34,6 @@ fi
 
 echo "Generating..."
 
-echo "dns_cloudflare_email = $CLOUDFLARE_EMAIL" >> /cloudflare.ini
-echo "dns_cloudflare_api_key = $CLOUDFLARE_API_KEY" >> /cloudflare.ini
-
-chmod 600 /cloudflare.ini
-
 CERTBOT="certbot certonly $ARGS \
     --agree-tos \
     --non-interactive \

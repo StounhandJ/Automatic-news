@@ -12,5 +12,6 @@ RUN apk -U upgrade \
     && rm -rf /var/cache/apk/*
 
 COPY ./gen-ssl.sh /gen-ssl.sh
+COPY ./cloudflare.ini /cloudflare.ini
 
 ENTRYPOINT [ "/gen-ssl.sh" ]
