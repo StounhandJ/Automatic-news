@@ -17,9 +17,9 @@ class ParserAbstract:
     def __init__(self):
         self.__className = self.__module__.split(".")[-1]
 
-    def _getLastTitle(self) -> str:
+    def _getLastSrc(self) -> str:
         class_name = self.__module__.split(".")[-1]
-        return self._getLastArticle(class_name).title
+        return self._getLastArticle(class_name).src
 
     def _getLastArticle(self, class_name) -> Article:
         storage = MongodbService.get_instance()

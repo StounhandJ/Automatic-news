@@ -10,7 +10,7 @@ class PlayGroundParser(ParserAbstract):
 
     async def parse(self) -> [Article]:
         articles = []
-        if self._getLastTitle() == "":
+        if self._getLastSrc() == "":
             articles = self._parsePage(1)
         else:
             page = 0
@@ -38,7 +38,7 @@ class PlayGroundParser(ParserAbstract):
         :param article: Article
         :return: bool
         """
-        return self._getLastTitle() == article.title
+        return self._getLastSrc() == article.src
 
     def _articleHtmlToArticle(self, articleHTML: bs4.Tag) -> Article:
         """

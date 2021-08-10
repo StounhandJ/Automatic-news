@@ -26,7 +26,7 @@ class DTFParser(ParserAbstract):
                 lastID, feedValue = self._getLastIdAndLastSortingValue(lastID, feedValue)
             articles += self._parseData(pageBS)
             page += 1
-            if self._getLastTitle() == "":
+            if self._getLastSrc() == "":
                 break
 
         return articles
@@ -111,7 +111,7 @@ class DTFParser(ParserAbstract):
         :param article: Article
         :return: bool
         """
-        return self._getLastTitle() == article.title
+        return self._getLastSrc() == article.src
 
     def _isGetLastArticle(self, articles, page) -> bool:
         return len(articles) == page * 12
