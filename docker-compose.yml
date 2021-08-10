@@ -26,9 +26,20 @@ services:
        MONGO_HOST: mongodb
        MONGO_DATABASE: ${DATABASE}
        MONGO_COLLECTION: ${DATABASE_COLLECTION}
+       TELEGRAM_HOST: telegram
     depends_on:
       - mongodb
+      - telegram
     container_name: news_parser
+
+  telegram:
+    build: ./telegram/
+    restart: always
+    environment:
+       DOCKER: "true"
+       CHANNEL_ID: ${CHANNEL_ID}
+       TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+    container_name: telegram
 
   news_site:
     build: ./site/

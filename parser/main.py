@@ -1,10 +1,13 @@
+import json
+import time
+import asyncio
+import requests
+
 from Logger import logger
-from data.config import release
+from data.config import release, telegramHost
 from parsers.DtfParser import DTFParser
 from parsers.PlayGroundParser import PlayGroundParser
 from storage import MongodbService
-import time
-import asyncio
 
 storage = MongodbService.get_instance()
 if not release:
@@ -15,13 +18,20 @@ playGroundParser = PlayGroundParser()
 dtfParser = DTFParser()
 
 
-def saveArticles(articles):
+def saveArticles(articlesJSON):
     """
     :param articles: [Article]
     :return:
     """
+    for article in articlesJSON:
+        storage.save_data(article)
+
+
+def articleToArticleJson(articles):
+    articlesJSON = []
     for article in articles:
-        storage.save_data(article.toArray())
+        articlesJSON.append(article.toArray())
+    return articlesJSON
 
 
 async def main():
@@ -29,10 +39,15 @@ async def main():
         stopGameArticles = await playGroundParser.parse()
         DtfArticles = await dtfParser.parse()
 
-        articles = stopGameArticles + DtfArticles
-        saveArticles(articles[::-1])
+        articles = DtfArticles + stopGameArticles
 
-        logger.log("{} articles added".format(len(articles)))
+        articlesJSON = articleToArticleJson(articles[::-1])
+
+        if len(articlesJSON) > 0:
+            requests.get("http://" + telegramHost, data=json.dumps(articlesJSON))
+        saveArticles(articlesJSON)
+
+        logger.log("{} articles added".format(len(articlesJSON)))
         time.sleep(60 * 10)
 
     # for data in storage.get_data(): Вывод всех статей
