@@ -3,7 +3,7 @@ from aiogram import Bot, types
 from aiogram.utils.exceptions import RetryAfter
 
 from data.Article import Article
-from data.config import CHANNEL_ID, TELEGRAM_TOKEN
+from data.config import CHANNEL_ID, TELEGRAM_TOKEN, POST_ARTICLE_EVERY_SECONDS
 
 
 bot = Bot(token=TELEGRAM_TOKEN, parse_mode=types.ParseMode.HTML)
@@ -29,15 +29,14 @@ def create_message_text(article: Article):
     return '<a href="{src}">{title}</a>'.format(src=article.src, title=article.title)
 
 
-async def main_send_message(articles: [Article]):
+async def main_send_message(article: Article):
     reconnect_telegram()
-    for article in articles:
-        try:
-            text = create_message_text(article)
-            if article.img_src:
-                await send_photo(CHANNEL_ID, text, article.img_src)
-            else:
-                await send_message(CHANNEL_ID, text)
-        except RetryAfter as e:
-            await asyncio.sleep(e.timeout)
-        # await asyncio.sleep(2)
+    text = create_message_text(article)
+    try:
+        if article.img_src:
+            await send_photo(CHANNEL_ID, text, article.img_src)
+        else:
+            await send_message(CHANNEL_ID, text)
+    except RetryAfter as e:
+        await asyncio.sleep(e.timeout)
+    await asyncio.sleep(POST_ARTICLE_EVERY_SECONDS)

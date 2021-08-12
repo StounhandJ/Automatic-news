@@ -1,3 +1,5 @@
 environs~=9.3.2
 aiogram~=2.14.3
 Flask~=2.0.1
+redis~=3.5.3
+rq~=1.9.0

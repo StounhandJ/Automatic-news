@@ -3,6 +3,7 @@ version: "3.7"
 volumes:
   mongodb_volume:
       name: mongo
+  redis_volume:
   logs:
       name: logs
 
@@ -39,7 +40,17 @@ services:
        DOCKER: "true"
        CHANNEL_ID: ${CHANNEL_ID}
        TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+       REDIS_HOST: redis
+       POST_ARTICLE_EVERY_SECONDS: ${POST_ARTICLE_EVERY_SECONDS}
+    depends_on:
+      - redis
     container_name: telegram
+
+  redis:
+    image: "redis:alpine"
+    volumes:
+     - redis_volume:/var/lib/redis
+    container_name: redis
 
   news_site:
     build: ./site/
