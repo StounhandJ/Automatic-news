@@ -5,6 +5,7 @@
 ## Dependencies:
 1. [Docker](https://www.docker.com/)
 1. [docker-compose](https://github.com/docker/compose)
+1. DNS [Cloudflare](https://www.cloudflare.com/)
 ## Launch:
 1. In the file [.env](.env) write your domain to the DOMAIN variable
 1. `chmod +x run.sh` Grant rights to execute the script

@@ -5,6 +5,7 @@
 ## Зависимости:
 1. [Docker](https://www.docker.com/)
 1. [docker-compose](https://github.com/docker/compose)
+1. DNS [Cloudflare](https://www.cloudflare.com/)
 ## Запуск:
 1. В файле [.env](.env) в переменную DOMAIN записать свой домен.
 1. `chmod +x run.sh` Выдать права на выполнения скрипта
