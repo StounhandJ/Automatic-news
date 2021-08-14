@@ -89,7 +89,9 @@ class DTFParser(ParserAbstract):
         :param articleHTML:
         :return: Article и его ID
         """
-        title = articleHTML.findAll(class_="content-title")[0].text.strip()
+        title = articleHTML.findAll(class_="content-title")[0] if len(articleHTML.findAll(class_="content-title"))>0 else articleHTML.findAll(class_="l-island-a")[0]
+        title = title.text.strip()
+
         src = articleHTML.findAll(class_="content-feed__link")[0]["href"]
         text = ""  # self._parseContentArticle(src)
 
