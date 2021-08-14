@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup, Tag
+import re
 
 from data.Article import Article
 from data.ArticleFactory import ArticleFactory
@@ -91,7 +92,7 @@ class DTFParser(ParserAbstract):
         :return: Article и его ID
         """
         title = articleHTML.find(class_="content-title") if articleHTML.find(class_="content-title") else articleHTML.find(class_="l-island-a")
-        title = title.text.strip()
+        title = re.sub(r"\n\n\nСтатьи редакции", "", title.text.strip())
 
         src = articleHTML.find(class_="content-feed__link")["href"]
         text = ""  # self._parseContentArticle(src)
