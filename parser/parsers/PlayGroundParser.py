@@ -1,5 +1,5 @@
 import bs4
-from data.Abstract.ParserAbstract import ParserAbstract
+from data.Abstract.ParserAbstract import ParserAbstract, parseErrorHandling
 from data.Article import Article
 
 from data.ArticleFactory import ArticleFactory
@@ -8,6 +8,7 @@ from data.ArticleFactory import ArticleFactory
 class PlayGroundParser(ParserAbstract):
     _url = "https://www.playground.ru/news"
 
+    @parseErrorHandling
     async def parse(self) -> [Article]:
         articles = []
         if self._getLastSrc() == "":
@@ -17,7 +18,7 @@ class PlayGroundParser(ParserAbstract):
             while self._isGetLastArticle(articles, page):
                 page += 1
                 articles += self._parsePage(page)
-                #Если пост был изменен и поиск улетел в бесконечность
+                # Если пост был изменен и поиск улетел в бесконечность
                 if len(articles) > 30 * 3:
                     articles = [articles[0]]
                     break
@@ -50,10 +51,10 @@ class PlayGroundParser(ParserAbstract):
         :param articleHTML:
         :return: Article
         """
-        title = articleHTML.findAll(class_="post-title")[0].text.strip()
-        src = articleHTML.findAll(class_="post-title")[0].findAll("a")[0]["href"]
+        title = articleHTML.find(class_="post-title").text.strip()
+        src = articleHTML.find(class_="post-title").find("a")["href"]
         text = ""  # self._parseContentArticle(src)
-        img_src = articleHTML.findAll("img")[0]["src"]
+        img_src = articleHTML.find("img")["src"]
         return ArticleFactory.create({
             "title": title,
             "src": src,

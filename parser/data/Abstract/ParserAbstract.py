@@ -8,10 +8,10 @@ from storage import MongodbService
 from data.ArticleFactory import ArticleFactory
 
 from data.Article import Article
+from Logger import logger
 
 
 class ParserAbstract:
-
     __className = ""
 
     def __init__(self):
@@ -44,3 +44,17 @@ class ParserAbstract:
         """
         :return: Article[]
         """
+
+
+def parseErrorHandling(func):
+    async def wrapper(self):
+        try:
+            return await func(self)
+        except AttributeError as e:
+            logger.error("Parser Error: {}".format(self._ParserAbstract__className))
+            return []
+        except Exception as e:
+            logger.error("Unknown error: {}".format(e))
+            return []
+
+    return wrapper

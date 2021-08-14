@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup, Tag
 
 from data.Article import Article
 from data.ArticleFactory import ArticleFactory
-from data.Abstract.ParserAbstract import ParserAbstract
+from data.Abstract.ParserAbstract import ParserAbstract, parseErrorHandling
 
 
 class DTFParser(ParserAbstract):
@@ -10,6 +10,7 @@ class DTFParser(ParserAbstract):
     _urlMore = "https://dtf.ru/games/entries/new/more"
     _lastID = 0
 
+    @parseErrorHandling
     async def parse(self) -> [Article]:
         articles = []
 
@@ -28,7 +29,7 @@ class DTFParser(ParserAbstract):
             page += 1
             if self._getLastSrc() == "":
                 break
-            #Если пост был изменен и поиск улетел в бесконечность
+            # Если пост был изменен и поиск улетел в бесконечность
             if len(articles) > 12 * 8:
                 articles = [articles[0]]
                 break
@@ -76,7 +77,7 @@ class DTFParser(ParserAbstract):
 
         for articleHTML in pageBS.findAll(class_="feed__item l-island-round"):
             article = self._articleHtmlToArticle(
-                articleHTML)  # Получение поста и установка id последнего проверенного поста
+                articleHTML)  # Получение поста
             if self._isLastArticle(article):
                 break
             articles.append(article)
@@ -89,21 +90,20 @@ class DTFParser(ParserAbstract):
         :param articleHTML:
         :return: Article и его ID
         """
-        title = articleHTML.findAll(class_="content-title")[0] if len(articleHTML.findAll(class_="content-title"))>0 else articleHTML.findAll(class_="l-island-a")[0]
+        title = articleHTML.find(class_="content-title") if articleHTML.find(class_="content-title") else articleHTML.find(class_="l-island-a")
         title = title.text.strip()
 
-        src = articleHTML.findAll(class_="content-feed__link")[0]["href"]
+        src = articleHTML.find(class_="content-feed__link")["href"]
         text = ""  # self._parseContentArticle(src)
 
-        imgDivs = articleHTML.findAll(class_="andropov_image")
-        videoDivs = articleHTML.findAll(class_="andropov_video")
+        imgDivs = articleHTML.find(class_="andropov_image")
+        videoDivs = articleHTML.find(class_="andropov_video")
         img_src = ""
-        if len(imgDivs) > 0:
-            img_src = imgDivs[0]["data-image-src"]
-        elif len(videoDivs) > 0:
-            img_src = videoDivs[0]["data-video-thumbnail"]
+        if imgDivs:
+            img_src = imgDivs["data-image-src"]
+        elif videoDivs:
+            img_src = videoDivs["data-video-thumbnail"]
 
-        id = articleHTML.findAll(class_="content-feed")[0]["data-content-id"]
         return ArticleFactory.create({
             "title": title,
             "src": src,
