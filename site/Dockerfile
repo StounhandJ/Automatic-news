@@ -2,7 +2,7 @@ FROM composer as composer
 COPY composer.* /app/
 RUN composer install --ignore-platform-reqs --no-scripts
 
-FROM php:fpm
+FROM php:8.1.0alpha3-fpm
 
 COPY composer.lock composer.json /var/www/
 
